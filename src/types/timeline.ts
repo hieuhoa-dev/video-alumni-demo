@@ -115,6 +115,18 @@ export type SceneOutro =
   | "depth"
   | "none";
 
+/** Cảnh dùng ảnh chụp toàn trang, cuộn có dừng từng mục. */
+export type StillScroll = {
+  src: string;
+  /** Kích thước gốc của ảnh (px). */
+  width: number;
+  height: number;
+  /** Các điểm dừng: y (px trong ảnh gốc) và số frame giữ nguyên. */
+  stops: { y: number; hold: number }[];
+  /** Số frame cuộn giữa hai điểm dừng. */
+  travel: number;
+};
+
 export type SceneConfig = {
   id: number;
   title: string;
@@ -123,6 +135,8 @@ export type SceneConfig = {
   /** File lời thoại riêng của cảnh, tương đối trong `public/`. */
   voiceSrc: string;
   durationInFrames: number;
+  /** Nếu có, hiển thị ảnh cuộn thay cho video. */
+  still?: StillScroll;
   /**
    * "auto": tự đo thời lượng file mp4 rồi tính tốc độ để khớp đúng số frame
    * của cảnh. Hoặc đặt số cụ thể (1 = tốc độ gốc).

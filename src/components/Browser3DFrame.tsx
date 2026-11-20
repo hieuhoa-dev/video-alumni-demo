@@ -2,6 +2,7 @@ import React from "react";
 import {
   AbsoluteFill,
   Easing,
+  Img,
   interpolate,
   OffthreadVideo,
   spring,
@@ -189,6 +190,52 @@ const ScanHighlight: React.FC<{ target: ZoomTarget }> = ({ target }) => {
  * Tự cập nhật thanh URL theo `routeChanges`, lật thẻ 3D khi đổi vai trò,
  * đổ bóng sâu đa lớp theo góc xoay và vẽ viền sáng + tia quét ở vùng zoom.
  */
+const StillScrollView: React.FC<{ still: NonNullable<SceneConfig["still"]> }> = ({ still }) => {
+  const frame = useCurrentFrame();
+  const k = BROWSER_WIDTH / still.width;
+  const maxY = still.height - BROWSER_CONTENT_HEIGHT / k;
+  // Dựng keyframe: giữ -> cuộn -> giữ ...
+  const times: number[] = [];
+  const ys: number[] = [];
+  let t = 0;
+  still.stops.forEach((st, i) => {
+    const y = Math.min(st.y, maxY);
+    times.push(t);
+    ys.push(y);
+    t += st.hold;
+    if (i < still.stops.length - 1) {
+      times.push(t);
+      ys.push(y);
+      t += still.travel;
+    }
+  });
+  // Easing trong từng đoạn cuộn: nội suy từng cặp để mượt đầu/cuối.
+  let y = ys[0];
+  for (let i = 0; i < times.length - 1; i++) {
+    if (frame >= times[i] && frame <= times[i + 1]) {
+      const p = interpolate(frame, [times[i], times[i + 1]], [0, 1], {
+        easing: Easing.inOut(Easing.cubic),
+      });
+      y = ys[i] + (ys[i + 1] - ys[i]) * p;
+      break;
+    }
+    if (frame > times[i + 1]) y = ys[i + 1];
+  }
+  return (
+    <Img
+      src={staticFile(still.src)}
+      style={{
+        position: "absolute",
+        left: 0,
+        top: 0,
+        width: BROWSER_WIDTH,
+        height: still.height * k,
+        transform: `translateY(${-y * k}px)`,
+      }}
+    />
+  );
+};
+
 export const Browser3DFrame: React.FC<{
   scene: SceneConfig;
   camera: Pose;
@@ -301,7 +348,9 @@ export const Browser3DFrame: React.FC<{
             background: COLORS.white,
           }}
         >
-          {useRecordings ? (
+          {scene.still ? (
+            <StillScrollView still={scene.still} />
+          ) : useRecordings ? (
             <OffthreadVideo
               src={staticFile(scene.videoSrc)}
               playbackRate={playbackRate}

@@ -21,7 +21,7 @@ const calculateMetadata: CalculateMetadataFunction<ShowcaseProps> = async ({
   if (props.useRecordings) {
     await Promise.all(
       SCENES.map(async (scene) => {
-        if (typeof scene.playbackRate === "number") return;
+        if (typeof scene.playbackRate === "number" || scene.still) return;
         const sceneSeconds = scene.durationInFrames / FPS;
         try {
           const meta = await getVideoMetadata(staticFile(scene.videoSrc));

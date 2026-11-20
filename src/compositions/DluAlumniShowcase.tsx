@@ -4,6 +4,7 @@ import {
   Audio,
   Img,
   interpolate,
+  Sequence,
   Series,
   staticFile,
   useCurrentFrame,
@@ -15,7 +16,14 @@ import { FloatingCallout } from "../components/FloatingCallout";
 import { Intertitle, IntertitleScrim } from "../components/Intertitle";
 import { RoleBadge } from "../components/RoleBadge";
 import { StudioBackground } from "../components/StudioBackground";
-import { ROLES, SCENES, SCENE_STARTS, TOTAL_FRAMES } from "../data/scenesConfig";
+import {
+  CLOSING_FROM,
+  ROLES,
+  SCENES,
+  SCENES_OFFSET,
+  SCENE_STARTS,
+  TOTAL_FRAMES,
+} from "../data/scenesConfig";
 import {
   INTERTITLE_FRAMES,
   getCameraPose,
@@ -226,6 +234,56 @@ const SceneStage: React.FC<{
   );
 };
 
+type Sfx = { from: number; src: string; volume: number };
+
+/** Dựng danh sách hiệu ứng âm thanh theo mốc thời gian toàn video. */
+const buildSfx = (): Sfx[] => {
+  const out: Sfx[] = [];
+  // Intro
+  out.push({ from: 4, src: "sfx/chime.mp3", volume: 0.6 });
+  [30, 52, 74, 96].forEach((d) => out.push({ from: d + 10, src: "sfx/pop.mp3", volume: 0.5 }));
+  out.push({ from: 160, src: "sfx/riser.mp3", volume: 0.55 });
+  out.push({ from: SCENES_OFFSET - 4, src: "sfx/boom.mp3", volume: 0.6 });
+  SCENES.forEach((scene, i) => {
+    const start = SCENE_STARTS[i];
+    if (i > 0) out.push({ from: start - 6, src: "sfx/whoosh.mp3", volume: 0.55 });
+    scene.callouts.forEach((c) => out.push({ from: start + c.fromFrame, src: "sfx/pop.mp3", volume: 0.38 }));
+    const track = buildTrack(scene.id, scene.durationInFrames);
+    track?.clicks.forEach((f) => out.push({ from: start + Math.round(f), src: "sfx/click.mp3", volume: 0.45 }));
+  });
+  // Outro
+  out.push({ from: CLOSING_FROM + 2, src: "sfx/whoosh.mp3", volume: 0.5 });
+  out.push({ from: CLOSING_FROM + 30, src: "sfx/chime.mp3", volume: 0.6 });
+  out.push({ from: CLOSING_FROM + 170, src: "sfx/whoosh.mp3", volume: 0.4 });
+  [210, 226, 242, 258].forEach((d) => out.push({ from: CLOSING_FROM + d, src: "sfx/pop.mp3", volume: 0.45 }));
+  out.push({ from: CLOSING_FROM + 300, src: "sfx/chime.mp3", volume: 0.35 });
+  return out;
+};
+
+const SoundLayer: React.FC<{ voiceover: VoiceoverMode }> = ({ voiceover }) => {
+  const sfx = React.useMemo(buildSfx, []);
+  const base = voiceover === "none" ? 0.3 : 0.13; // hạ nhạc khi có lời đọc
+  return (
+    <>
+      <Audio
+        src={staticFile("audio/music.mp3")}
+        volume={(f) =>
+          base *
+          interpolate(f, [0, 90, TOTAL_FRAMES - 180, TOTAL_FRAMES], [0, 1, 1, 0], {
+            extrapolateLeft: "clamp",
+            extrapolateRight: "clamp",
+          })
+        }
+      />
+      {sfx.map((e, i) => (
+        <Sequence key={i} from={Math.max(0, e.from)} layout="none">
+          <Audio src={staticFile(e.src)} volume={e.volume} />
+        </Sequence>
+      ))}
+    </>
+  );
+};
+
 export const DluAlumniShowcase: React.FC<ShowcaseProps> = ({
   useRecordings,
   voiceover,
@@ -237,6 +295,7 @@ export const DluAlumniShowcase: React.FC<ShowcaseProps> = ({
 
       {voiceover === "single" ? <Audio src={staticFile("audio/voiceover.mp3")} /> : null}
 
+      <Sequence from={SCENES_OFFSET} layout="none">
       <Series>
         {SCENES.map((scene) => (
           <Series.Sequence
@@ -257,12 +316,14 @@ export const DluAlumniShowcase: React.FC<ShowcaseProps> = ({
           </Series.Sequence>
         ))}
       </Series>
+      </Sequence>
+      <SoundLayer voiceover={voiceover} />
 
       {/* Lớp phủ cố định, luôn nằm trên khung trình duyệt kể cả khi zoom */}
       <BrandChip />
       <SceneProgress />
       <OpeningOverlay />
-      <ClosingOverlay from={TOTAL_FRAMES - 120} />
+      <ClosingOverlay from={CLOSING_FROM} />
     </AbsoluteFill>
   );
 };

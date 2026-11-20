@@ -7,7 +7,7 @@ export type CursorTrack = { points: TrackPoint[]; clicks: number[] };
 /** Chuyển mẫu chuột (giây trong file quay) sang frame cục bộ của cảnh. */
 export const buildTrack = (sceneId: number, totalFrames: number): CursorTrack | null => {
   const meta = RECORDING_META[sceneId];
-  if (!meta || meta.track.length < 2) return null;
+  if (sceneId <= 2 || !meta || meta.track.length < 2) return null;
   const k = totalFrames / meta.duration;
   const points = meta.track.map(([t, x, y, c]) => ({ f: t * k, x, y, click: c === 1 }));
   return { points, clicks: points.filter((p) => p.click).map((p) => p.f) };

@@ -62,7 +62,7 @@ const LEFT_BOTTOM = { left: 120, bottom: 210 };
 const scene1Callouts: Callout[] = [
   {
     fromFrame: 70,
-    toFrame: 380,
+    toFrame: 330,
     eyebrow: "DLU CONNECT",
     title: "Một nền tảng cho cả cộng đồng",
     body: "Nhà trường, sinh viên, cựu sinh viên, doanh nghiệp",
@@ -71,54 +71,25 @@ const scene1Callouts: Callout[] = [
     position: RIGHT_TOP,
   },
   {
-    fromFrame: 430,
-    toFrame: 720,
-    eyebrow: "Kỷ niệm",
-    title: "50 năm truyền thống",
-    body: "Đại học Đà Lạt · 1976 – 2026",
-    icon: "home",
-    tone: "sun",
+    fromFrame: 380,
+    toFrame: 630,
+    eyebrow: "Trang chủ",
+    title: "Banner tin nổi bật của Khoa",
+    body: "Sự kiện, tuyển dụng, hoạt động mới",
+    icon: "book",
+    tone: "pine",
     position: LEFT_BOTTOM,
   },
 ];
 
 const scene2Callouts: Callout[] = [
-  {
-    fromFrame: 70,
-    toFrame: 250,
-    eyebrow: "Trang chủ",
-    title: "Tin mới cập nhật liên tục",
-    icon: "book",
-    tone: "sun",
-    position: RIGHT_TOP,
-  },
-  {
-    fromFrame: 280,
-    toFrame: 640,
-    eyebrow: "Trang chủ",
-    title: "Tin học thuật & ảnh sự kiện",
-    icon: "image",
-    tone: "sky",
-    position: LEFT_BOTTOM,
-  },
-  {
-    fromFrame: 680,
-    toFrame: 900,
-    eyebrow: "Trang chủ",
-    title: "Số liệu mạng lưới & đối tác",
-    icon: "building",
-    tone: "pine",
-    position: RIGHT_BOTTOM,
-  },
-  {
-    fromFrame: 920,
-    toFrame: 1035,
-    eyebrow: "Trang chủ",
-    title: "Tiến độ quỹ học bổng",
-    icon: "heart",
-    tone: "sun",
-    position: LEFT_BOTTOM,
-  },
+  { fromFrame: 70, toFrame: 215, eyebrow: "Trang chủ", title: "Tin tức & sự kiện nổi bật", body: "Cập nhật hoạt động của Khoa", icon: "book", tone: "sun", position: RIGHT_BOTTOM },
+  { fromFrame: 255, toFrame: 430, eyebrow: "Trang chủ", title: "Cơ hội nghề nghiệp", body: "Tin tuyển dụng đã được Khoa xác thực", icon: "briefcase", tone: "sky", position: RIGHT_TOP },
+  { fromFrame: 490, toFrame: 665, eyebrow: "Trang chủ", title: "Gương mặt cựu sinh viên", body: "Những câu chuyện truyền cảm hứng", icon: "users", tone: "pine", position: LEFT_BOTTOM },
+  { fromFrame: 725, toFrame: 900, eyebrow: "Trang chủ", title: "Học bổng doanh nghiệp đồng hành", body: "Theo dõi tiến độ quỹ học bổng", icon: "heart", tone: "sun", position: RIGHT_BOTTOM },
+  { fromFrame: 960, toFrame: 1100, eyebrow: "Trang chủ", title: "Mạng lưới doanh nghiệp đối tác", icon: "building", tone: "sky", position: RIGHT_TOP },
+  { fromFrame: 1145, toFrame: 1320, eyebrow: "Trang chủ", title: "Thư viện ảnh truyền thống", body: "Khoảnh khắc của các thế hệ DLU", icon: "image", tone: "pine", position: LEFT_BOTTOM },
+  { fromFrame: 1380, toFrame: 1760, eyebrow: "Thông tin liên hệ", title: "Hotline +84 263 3822 246", body: "it@dlu.edu.vn · Tòa nhà A7, Phù Đổng Thiên Vương, Đà Lạt", icon: "clipboard", tone: "sun", position: RIGHT_TOP },
 ];
 
 const scene3Callouts: Callout[] = [
@@ -204,10 +175,10 @@ const scene6Callouts: Callout[] = [
   {
     fromFrame: 560,
     toFrame: 890,
-    eyebrow: "Quyền riêng tư",
-    title: "Yêu cầu gỡ ảnh",
-    body: "Ban quản trị xem xét và xử lý",
-    icon: "shield",
+    eyebrow: "Thư viện ảnh",
+    title: "Xem ảnh toàn màn hình",
+    body: "Chuyển ảnh liền mạch trong album",
+    icon: "image",
     tone: "pine",
     position: LEFT_BOTTOM,
   },
@@ -300,7 +271,7 @@ const RAW_SCENES: SceneConfig[] = [
     title: "Mở đầu",
     videoSrc: "recordings/scene-1.mp4",
     voiceSrc: "audio/voice-1.mp3",
-    durationInFrames: 750,
+    durationInFrames: 660,
     playbackRate: "auto",
     intro: "orbit",
     outro: "depth",
@@ -312,15 +283,31 @@ const RAW_SCENES: SceneConfig[] = [
       { frame: 750, rotateX: 1, rotateY: 2, scale: 1.02 },
     ],
     swayDegrees: 0,
-    zoomTargets: [{ fromFrame: 330, toFrame: 620, x: 0.5, y: 0.45, scale: 1.22 }],
+    zoomTargets: [],
     callouts: scene1Callouts,
   },
   {
     id: 2,
     title: "Trang chủ",
-    videoSrc: "recordings/scene-2.mp4",
+    videoSrc: "recordings/scene-2.jpg",
+    still: {
+      src: "recordings/scene-2.jpg",
+      width: 1739,
+      height: 6110,
+      travel: 45,
+      stops: [
+        { y: 0, hold: 190 },
+        { y: 940, hold: 190 },
+        { y: 1600, hold: 190 },
+        { y: 2500, hold: 190 },
+        { y: 3100, hold: 140 },
+        { y: 3550, hold: 190 },
+        { y: 4750, hold: 260 },
+        { y: 6110, hold: 90 },
+      ],
+    },
     voiceSrc: "audio/voice-2.mp3",
-    durationInFrames: 900,
+    durationInFrames: 1770,
     playbackRate: "auto",
     intro: "depth",
     outro: "depth",
@@ -329,15 +316,8 @@ const RAW_SCENES: SceneConfig[] = [
     routeChanges: [{ frame: 0, url: "/" }],
     cameraKeyframes: FLAT,
     swayDegrees: 5,
-    zoomTargets: [
-      { fromFrame: 70, toFrame: 250, x: 0.5, y: 0.1, scale: 1.22 },
-      { fromFrame: 280, toFrame: 450, x: 0.5, y: 0.4, scale: 1.22 },
-      { fromFrame: 460, toFrame: 650, x: 0.5, y: 0.55, scale: 1.22 },
-      { fromFrame: 680, toFrame: 800, x: 0.5, y: 0.5, scale: 1.22 },
-      { fromFrame: 810, toFrame: 900, x: 0.5, y: 0.55, scale: 1.22 },
-      { fromFrame: 920, toFrame: 1035, x: 0.5, y: 0.55, scale: 1.22 },
-    ],
-    callouts: scaleCallouts(scene2Callouts, 900 / 1050),
+    zoomTargets: [],
+    callouts: scene2Callouts,
     intertitle: {
       eyebrow: "Cảnh 2 / 8",
       words: [
@@ -351,7 +331,7 @@ const RAW_SCENES: SceneConfig[] = [
     title: "Việc làm & Thực tập",
     videoSrc: "recordings/scene-3.mp4",
     voiceSrc: "audio/voice-3.mp3",
-    durationInFrames: 1050,
+    durationInFrames: 1200,
     playbackRate: "auto",
     intro: "depth",
     outro: "depth",
@@ -368,7 +348,7 @@ const RAW_SCENES: SceneConfig[] = [
       { fromFrame: 520, toFrame: 800, x: 0.5, y: 0.45, scale: 1.22 },
       { fromFrame: 880, toFrame: 1160, x: 0.5, y: 0.5, scale: 1.22 },
     ],
-    callouts: scaleCallouts(scene3Callouts, 1050 / 1200),
+    callouts: scene3Callouts,
     intertitle: {
       eyebrow: "Cảnh 3 / 8",
       words: [
@@ -383,7 +363,7 @@ const RAW_SCENES: SceneConfig[] = [
     title: "Sự kiện & Diễn giả cựu SV",
     videoSrc: "recordings/scene-4.mp4",
     voiceSrc: "audio/voice-4.mp3",
-    durationInFrames: 1500,
+    durationInFrames: 1650,
     playbackRate: "auto",
     intro: "depth",
     outro: "depth",
@@ -403,7 +383,7 @@ const RAW_SCENES: SceneConfig[] = [
       { fromFrame: 480, toFrame: 700, x: 0.5, y: 0.45, scale: 1.22, highlight: { width: 0.4, height: 0.22 } },
       { fromFrame: 860, toFrame: 1020, x: 0.5, y: 0.4, scale: 1.22 },
     ],
-    callouts: scene4Callouts,
+    callouts: scaleCallouts(scene4Callouts, 1650 / 1500),
     intertitle: {
       eyebrow: "Cảnh 4 / 8",
       words: [
@@ -418,7 +398,7 @@ const RAW_SCENES: SceneConfig[] = [
     title: "Góc chia sẻ & Mạng lưới Cựu SV",
     videoSrc: "recordings/scene-5.mp4",
     voiceSrc: "audio/voice-5.mp3",
-    durationInFrames: 1050,
+    durationInFrames: 1200,
     playbackRate: "auto",
     intro: "depth",
     outro: "depth",
@@ -438,7 +418,7 @@ const RAW_SCENES: SceneConfig[] = [
       { fromFrame: 500, toFrame: 780, x: 0.5, y: 0.45, scale: 1.22, highlight: { width: 0.4, height: 0.2 } },
       { fromFrame: 840, toFrame: 1020, x: 0.5, y: 0.45, scale: 1.22 },
     ],
-    callouts: scene5Callouts,
+    callouts: scaleCallouts(scene5Callouts, 1200 / 1050),
     intertitle: {
       eyebrow: "Cảnh 5 / 8",
       words: [
@@ -484,7 +464,7 @@ const RAW_SCENES: SceneConfig[] = [
     title: "Quỹ học bổng",
     videoSrc: "recordings/scene-7.mp4",
     voiceSrc: "audio/voice-7.mp3",
-    durationInFrames: 1200,
+    durationInFrames: 1350,
     playbackRate: "auto",
     intro: "depth",
     outro: "depth",
@@ -504,7 +484,7 @@ const RAW_SCENES: SceneConfig[] = [
       { fromFrame: 600, toFrame: 880, x: 0.5, y: 0.45, scale: 1.22 },
       { fromFrame: 960, toFrame: 1180, x: 0.5, y: 0.45, scale: 1.22 },
     ],
-    callouts: scene7Callouts,
+    callouts: scaleCallouts(scene7Callouts, 1350 / 1200),
     intertitle: {
       eyebrow: "Cảnh 7 / 8",
       words: [
@@ -518,7 +498,7 @@ const RAW_SCENES: SceneConfig[] = [
     title: "Doanh nghiệp & Quản trị",
     videoSrc: "recordings/scene-8.mp4",
     voiceSrc: "audio/voice-8.mp3",
-    durationInFrames: 1800,
+    durationInFrames: 1950,
     playbackRate: "auto",
     intro: "flip",
     outro: "orbit",
@@ -543,7 +523,7 @@ const RAW_SCENES: SceneConfig[] = [
       { fromFrame: 1070, toFrame: 1280, x: 0.5, y: 0.45, scale: 1.22 },
       { fromFrame: 1310, toFrame: 1630, x: 0.5, y: 0.45, scale: 1.22 },
     ],
-    callouts: scene8Callouts,
+    callouts: scaleCallouts(scene8Callouts, 1950 / 1800),
     intertitle: {
       eyebrow: "Cảnh 8 / 8",
       words: [
@@ -561,7 +541,7 @@ const shortUrl = (u: string) =>
 /** Ghép đường dẫn và vai trò thật (ghi lúc quay) lên cấu hình cảnh. */
 const withMeta = (scene: SceneConfig): SceneConfig => {
   const meta = RECORDING_META[scene.id];
-  if (!meta) return scene;
+  if (!meta || scene.id <= 2) return scene;
   const k = scene.durationInFrames / meta.duration;
   const routes = meta.navs.map(([t, u]) => ({ frame: Math.round(t * k), url: shortUrl(u) }));
   const routeChanges = routes.filter((r, i) => i === 0 || r.url !== routes[i - 1].url);
@@ -577,13 +557,25 @@ const withMeta = (scene: SceneConfig): SceneConfig => {
 
 export const SCENES: SceneConfig[] = RAW_SCENES.map(withMeta);
 
-export const TOTAL_FRAMES = SCENES.reduce(
+/** Intro dài 11 giây; cảnh 1 bắt đầu chồng lên 2 giây cuối của intro để chuyển tiếp chậm, mượt. */
+export const INTRO_FRAMES = 330;
+export const INTRO_OVERLAP = 60;
+export const SCENES_OFFSET = INTRO_FRAMES - INTRO_OVERLAP;
+/** Outro dài 13 giây, chồng lên 3 giây cuối của cảnh 8. */
+export const OUTRO_FRAMES = 390;
+export const OUTRO_OVERLAP = 90;
+
+export const SCENES_TOTAL = SCENES.reduce(
   (sum, scene) => sum + scene.durationInFrames,
   0,
 );
 
-/** Số frame đầu của mỗi cảnh trên timeline toàn video. */
+export const TOTAL_FRAMES = SCENES_OFFSET + SCENES_TOTAL + (OUTRO_FRAMES - OUTRO_OVERLAP);
+
+/** Frame (toàn video) bắt đầu mỗi cảnh. */
 export const SCENE_STARTS: number[] = SCENES.reduce<number[]>((acc, scene, i) => {
-  acc.push(i === 0 ? 0 : acc[i - 1] + SCENES[i - 1].durationInFrames);
+  acc.push(i === 0 ? SCENES_OFFSET : acc[i - 1] + SCENES[i - 1].durationInFrames);
   return acc;
 }, []);
+
+export const CLOSING_FROM = SCENES_OFFSET + SCENES_TOTAL - OUTRO_OVERLAP;
