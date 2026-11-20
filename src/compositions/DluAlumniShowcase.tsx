@@ -54,7 +54,7 @@ export type ShowcaseProps = {
 
 export const defaultShowcaseProps: ShowcaseProps = {
   useRecordings: true,
-  voiceover: "none",
+  voiceover: "perScene",
   playbackRates: {},
 };
 
@@ -292,6 +292,16 @@ export const DluAlumniShowcase: React.FC<ShowcaseProps> = ({
       <StudioBackground />
 
       {voiceover === "single" ? <Audio src={staticFile("audio/voiceover.mp3")} /> : null}
+      {voiceover === "perScene" ? (
+        <>
+          <Sequence from={0} layout="none">
+            <Audio src={staticFile("audio/voice-intro.mp3")} />
+          </Sequence>
+          <Sequence from={CLOSING_FROM} layout="none">
+            <Audio src={staticFile("audio/voice-outro.mp3")} />
+          </Sequence>
+        </>
+      ) : null}
 
       <Sequence from={SCENES_OFFSET} layout="none">
       <Series>
