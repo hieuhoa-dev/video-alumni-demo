@@ -254,9 +254,7 @@ const buildSfx = (): Sfx[] => {
   // Outro
   out.push({ from: CLOSING_FROM + 2, src: "sfx/whoosh.mp3", volume: 0.5 });
   out.push({ from: CLOSING_FROM + 30, src: "sfx/chime.mp3", volume: 0.6 });
-  out.push({ from: CLOSING_FROM + 170, src: "sfx/whoosh.mp3", volume: 0.4 });
-  [210, 226, 242, 258].forEach((d) => out.push({ from: CLOSING_FROM + d, src: "sfx/pop.mp3", volume: 0.45 }));
-  out.push({ from: CLOSING_FROM + 300, src: "sfx/chime.mp3", volume: 0.35 });
+  out.push({ from: CLOSING_FROM + 200, src: "sfx/chime.mp3", volume: 0.35 });
   return out;
 };
 

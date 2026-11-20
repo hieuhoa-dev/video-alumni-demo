@@ -208,7 +208,7 @@ export const OpeningOverlay: React.FC = () => {
   );
 };
 
-/** Kết: logo, lời kêu gọi rồi trượt lên để lộ thông tin liên hệ. */
+/** Kết: logo, lời kêu gọi rồi trượt lên để lộ thông tin  */
 export const ClosingOverlay: React.FC<{ from: number }> = ({ from }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -217,17 +217,6 @@ export const ClosingOverlay: React.FC<{ from: number }> = ({ from }) => {
   const bg = interpolate(local, [0, 50], [0, 0.97], { extrapolateRight: "clamp" });
   const pop = spring({ frame: local - 24, fps, config: { damping: 13, stiffness: 90 } });
   const t = interpolate(local, [50, 100], [0, 1], { extrapolateRight: "clamp", easing: expo });
-  const shift = interpolate(local, [170, 230], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-    easing: Easing.inOut(Easing.cubic),
-  });
-  const CONTACT = [
-    { k: "Địa chỉ", v: "Tòa nhà A7, Số 01 Phù Đổng Thiên Vương, Phường 8, TP. Đà Lạt, Lâm Đồng" },
-    { k: "Hotline hỗ trợ", v: "+84 263 3822 246" },
-    { k: "Email", v: "it@dlu.edu.vn" },
-    { k: "Giờ làm việc", v: "Thứ Hai – Thứ Sáu · 07:30–11:30 | 13:00–17:00" },
-  ];
   return (
     <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", pointerEvents: "none" }}>
       <AbsoluteFill style={{ background: `rgba(244,246,250,${bg})` }} />
@@ -236,7 +225,7 @@ export const ClosingOverlay: React.FC<{ from: number }> = ({ from }) => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          transform: `translateY(${-shift * 235}px) scale(${1 - shift * 0.22})`,
+          
         }}
       >
         <Img
@@ -270,46 +259,6 @@ export const ClosingOverlay: React.FC<{ from: number }> = ({ from }) => {
         <div style={{ fontFamily: FONT_UI, fontWeight: 500, fontSize: 32, color: COLORS.muted, marginTop: 10, opacity: t }}>
           Khoa Công nghệ Thông tin – Trường Đại học Đà Lạt
         </div>
-      </div>
-      <div
-        style={{
-          position: "absolute",
-          left: 220,
-          right: 220,
-          top: 640,
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: 22,
-        }}
-      >
-        {CONTACT.map((c, i) => {
-          const a = interpolate(local, [210 + i * 16, 240 + i * 16], [0, 1], {
-            extrapolateLeft: "clamp",
-            extrapolateRight: "clamp",
-            easing: expo,
-          });
-          return (
-            <div
-              key={c.k}
-              style={{
-                opacity: a,
-                transform: `translateY(${(1 - a) * 30}px)`,
-                background: COLORS.white,
-                border: `1.5px solid ${COLORS.blue200}`,
-                borderRadius: 24,
-                padding: "20px 30px",
-                boxShadow: "0 14px 36px -18px rgba(15,110,120,0.4)",
-              }}
-            >
-              <div style={{ fontFamily: FONT_UI, fontSize: 24, fontWeight: 600, color: COLORS.blue, letterSpacing: "0.04em", textTransform: "uppercase" }}>
-                {c.k}
-              </div>
-              <div style={{ fontFamily: FONT_UI, fontSize: 30, fontWeight: 600, color: COLORS.ink, marginTop: 6, lineHeight: 1.25 }}>
-                {c.v}
-              </div>
-            </div>
-          );
-        })}
       </div>
     </AbsoluteFill>
   );

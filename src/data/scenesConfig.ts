@@ -89,7 +89,7 @@ const scene2Callouts: Callout[] = [
   { fromFrame: 725, toFrame: 900, eyebrow: "Trang chủ", title: "Học bổng doanh nghiệp đồng hành", body: "Theo dõi tiến độ quỹ học bổng", icon: "heart", tone: "sun", position: RIGHT_BOTTOM },
   { fromFrame: 960, toFrame: 1100, eyebrow: "Trang chủ", title: "Mạng lưới doanh nghiệp đối tác", icon: "building", tone: "sky", position: RIGHT_TOP },
   { fromFrame: 1145, toFrame: 1320, eyebrow: "Trang chủ", title: "Thư viện ảnh truyền thống", body: "Khoảnh khắc của các thế hệ DLU", icon: "image", tone: "pine", position: LEFT_BOTTOM },
-  { fromFrame: 1380, toFrame: 1760, eyebrow: "Thông tin liên hệ", title: "Hotline +84 263 3822 246", body: "it@dlu.edu.vn · Tòa nhà A7, Phù Đổng Thiên Vương, Đà Lạt", icon: "clipboard", tone: "sun", position: RIGHT_TOP },
+  { fromFrame: 1380, toFrame: 1760, eyebrow: "Thông tin liên hệ", title: "Liên hệ Khoa CNTT – Đại học Đà Lạt", icon: "building", tone: "sun", position: RIGHT_TOP },
 ];
 
 const scene3Callouts: Callout[] = [
@@ -562,7 +562,7 @@ export const INTRO_FRAMES = 330;
 export const INTRO_OVERLAP = 60;
 export const SCENES_OFFSET = INTRO_FRAMES - INTRO_OVERLAP;
 /** Outro dài 13 giây, chồng lên 3 giây cuối của cảnh 8. */
-export const OUTRO_FRAMES = 390;
+export const OUTRO_FRAMES = 330;
 export const OUTRO_OVERLAP = 90;
 
 export const SCENES_TOTAL = SCENES.reduce(
