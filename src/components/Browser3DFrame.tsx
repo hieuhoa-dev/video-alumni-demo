@@ -29,6 +29,8 @@ import {
   type Pose,
 } from "../lib/camera";
 import type { SceneConfig, ZoomTarget } from "../types/timeline";
+import { CursorLayer } from "./CursorLayer";
+import { getClickWeight, getFocus, type CursorTrack } from "../lib/cursor";
 
 const TYPE_FRAMES = 12;
 
@@ -159,7 +161,7 @@ const ScanHighlight: React.FC<{ target: ZoomTarget }> = ({ target }) => {
         height,
         borderRadius: 24,
         background: "rgba(234,241,255,0.28)",
-        boxShadow: `inset 0 0 0 3px ${COLORS.blue200}, 0 0 0 10px rgba(47,107,255,0.10)`,
+        boxShadow: `inset 0 0 0 3px ${COLORS.blue200}, 0 0 0 10px rgba(15,110,120,0.10)`,
         opacity: w,
         transform: `scale(${interpolate(pop, [0, 1], [0.94, 1])})`,
         pointerEvents: "none",
@@ -174,7 +176,7 @@ const ScanHighlight: React.FC<{ target: ZoomTarget }> = ({ target }) => {
           height: "100%",
           borderRadius: 3,
           background: COLORS.blue500,
-          boxShadow: "0 0 30px 6px rgba(47,107,255,0.35)",
+          boxShadow: "0 0 30px 6px rgba(15,110,120,0.35)",
           opacity: scanOpacity,
         }}
       />
@@ -192,8 +194,11 @@ export const Browser3DFrame: React.FC<{
   camera: Pose;
   playbackRate: number;
   useRecordings: boolean;
-}> = ({ scene, camera, playbackRate, useRecordings }) => {
+  track?: CursorTrack | null;
+}> = ({ scene, camera, playbackRate, useRecordings, track }) => {
   const frame = useCurrentFrame();
+  const focusW = track ? getClickWeight(track, frame) : 0;
+  const focus = track && focusW > 0 ? getFocus(track, frame) : null;
 
   const flip = getFlipAngle(scene, frame);
   const route = getUrlAt(scene, frame);
@@ -306,9 +311,23 @@ export const Browser3DFrame: React.FC<{
           ) : (
             <PlaceholderScreen scene={scene} path={route.url} />
           )}
-          {scene.zoomTargets.map((target, i) => (
+          {track ? null : scene.zoomTargets.map((target, i) => (
             <ScanHighlight key={i} target={target} />
           ))}
+          {/* Focus pull: vùng quanh con trỏ nét, phần còn lại mờ và tối nhẹ */}
+          {focus ? (
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                backdropFilter: `blur(${focusW * 5}px)`,
+                background: `rgba(6,40,46,${focusW * 0.16})`,
+                WebkitMaskImage: `radial-gradient(circle 230px at ${focus.px}px ${focus.py}px, transparent 0%, transparent 55%, black 100%)`,
+                maskImage: `radial-gradient(circle 230px at ${focus.px}px ${focus.py}px, transparent 0%, transparent 55%, black 100%)`,
+              }}
+            />
+          ) : null}
+          {track ? <CursorLayer track={track} /> : null}
         </div>
       </div>
     </div>

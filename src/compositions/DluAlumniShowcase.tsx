@@ -2,17 +2,20 @@ import React from "react";
 import {
   AbsoluteFill,
   Audio,
+  Img,
   interpolate,
   Series,
   staticFile,
   useCurrentFrame,
 } from "remotion";
+import { buildTrack } from "../lib/cursor";
+import { ClosingOverlay, OpeningOverlay } from "../components/BrandOverlays";
 import { Browser3DFrame } from "../components/Browser3DFrame";
 import { FloatingCallout } from "../components/FloatingCallout";
 import { Intertitle, IntertitleScrim } from "../components/Intertitle";
 import { RoleBadge } from "../components/RoleBadge";
 import { StudioBackground } from "../components/StudioBackground";
-import { ROLES, SCENES, SCENE_STARTS } from "../data/scenesConfig";
+import { ROLES, SCENES, SCENE_STARTS, TOTAL_FRAMES } from "../data/scenesConfig";
 import {
   INTERTITLE_FRAMES,
   getCameraPose,
@@ -67,23 +70,7 @@ const BrandChip: React.FC = () => (
       borderRadius: 999,
     }}
   >
-    <div
-      style={{
-        width: 72,
-        height: 72,
-        borderRadius: "50%",
-        background: `linear-gradient(135deg, ${COLORS.blue2}, ${COLORS.blueDeep})`,
-        color: COLORS.white,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontFamily: FONT_DISPLAY,
-        fontSize: 40,
-        boxShadow: "0 10px 24px -8px rgba(47,107,255,0.55)",
-      }}
-    >
-      D
-    </div>
+    <Img src={staticFile("brand/logo.png")} style={{ width: 76, height: 76, borderRadius: "50%" }} />
     <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
       <div
         style={{
@@ -168,8 +155,12 @@ const SceneStage: React.FC<{
 }> = ({ scene, playbackRate, useRecordings, voiceover }) => {
   const frame = useCurrentFrame();
 
+  const track = React.useMemo(
+    () => buildTrack(scene.id, scene.durationInFrames),
+    [scene.id, scene.durationInFrames],
+  );
   const transition = getTransitionPose(scene, frame);
-  const camera = getCameraPose(scene, frame);
+  const camera = getCameraPose(scene, frame, track);
 
   const roleId = getRoleAt(scene, frame);
   const role = ROLES[roleId];
@@ -209,6 +200,7 @@ const SceneStage: React.FC<{
             camera={camera}
             playbackRate={playbackRate}
             useRecordings={useRecordings}
+            track={track}
           />
         </div>
       </AbsoluteFill>
@@ -269,6 +261,8 @@ export const DluAlumniShowcase: React.FC<ShowcaseProps> = ({
       {/* Lớp phủ cố định, luôn nằm trên khung trình duyệt kể cả khi zoom */}
       <BrandChip />
       <SceneProgress />
+      <OpeningOverlay />
+      <ClosingOverlay from={TOTAL_FRAMES - 120} />
     </AbsoluteFill>
   );
 };

@@ -5,6 +5,7 @@ import type {
   RoleId,
   SceneConfig,
 } from "../types/timeline";
+import { RECORDING_META } from "./recordingMeta";
 
 /**
  * Cấu hình 8 cảnh. Tổng = 9000 frame @ 30fps = 300 giây.
@@ -152,34 +153,11 @@ const scene3Callouts: Callout[] = [
 ];
 
 const scene4Callouts: Callout[] = [
-  {
-    fromFrame: 70,
-    toFrame: 330,
-    eyebrow: "Sự kiện",
-    title: "Lịch hội thảo & diễn giả",
-    icon: "calendar",
-    tone: "sky",
-    position: RIGHT_TOP,
-  },
-  {
-    fromFrame: 470,
-    toFrame: 780,
-    eyebrow: "Sinh viên",
-    title: "Đăng ký sự kiện một chạm",
-    body: "Theo dõi mục đã đăng ký",
-    icon: "calendar",
-    tone: "pine",
-    position: LEFT_BOTTOM,
-  },
-  {
-    fromFrame: 830,
-    toFrame: 1035,
-    eyebrow: "Sinh viên",
-    title: "Biểu mẫu & khảo sát từ Khoa",
-    icon: "clipboard",
-    tone: "sun",
-    position: RIGHT_BOTTOM,
-  },
+  { fromFrame: 60, toFrame: 300, eyebrow: "Sự kiện", title: "Lịch hội thảo & diễn giả", icon: "calendar", tone: "sky", position: RIGHT_TOP },
+  { fromFrame: 360, toFrame: 660, eyebrow: "Quản trị Khoa", title: "Mời cựu sinh viên làm diễn giả", body: "Chọn cựu SV, gửi lời nhắn", icon: "users", tone: "sky", position: LEFT_BOTTOM },
+  { fromFrame: 690, toFrame: 880, eyebrow: "Quản trị Khoa", title: "Theo dõi trạng thái lời mời", body: "Đang chờ phản hồi", icon: "clipboard", tone: "sun", position: RIGHT_TOP },
+  { fromFrame: 940, toFrame: 1180, eyebrow: "Cựu sinh viên", title: "Nhận lời mời, đồng ý một chạm", icon: "pen", tone: "pine", position: RIGHT_BOTTOM },
+  { fromFrame: 1240, toFrame: 1470, eyebrow: "Sự kiện", title: "Diễn giả hiện trên trang sự kiện", body: "Sinh viên đăng ký tham dự", icon: "calendar", tone: "pine", position: RIGHT_TOP },
 ];
 
 const scene5Callouts: Callout[] = [
@@ -313,7 +291,10 @@ const scene8Callouts: Callout[] = [
   },
 ];
 
-export const SCENES: SceneConfig[] = [
+const scaleCallouts = (list: Callout[], k: number): Callout[] =>
+  list.map((c) => ({ ...c, fromFrame: Math.round(c.fromFrame * k), toFrame: Math.round(c.toFrame * k) }));
+
+const RAW_SCENES: SceneConfig[] = [
   {
     id: 1,
     title: "Mở đầu",
@@ -339,7 +320,7 @@ export const SCENES: SceneConfig[] = [
     title: "Trang chủ",
     videoSrc: "recordings/scene-2.mp4",
     voiceSrc: "audio/voice-2.mp3",
-    durationInFrames: 1050,
+    durationInFrames: 900,
     playbackRate: "auto",
     intro: "depth",
     outro: "depth",
@@ -356,7 +337,7 @@ export const SCENES: SceneConfig[] = [
       { fromFrame: 810, toFrame: 900, x: 0.5, y: 0.55, scale: 1.22 },
       { fromFrame: 920, toFrame: 1035, x: 0.5, y: 0.55, scale: 1.22 },
     ],
-    callouts: scene2Callouts,
+    callouts: scaleCallouts(scene2Callouts, 900 / 1050),
     intertitle: {
       eyebrow: "Cảnh 2 / 8",
       words: [
@@ -370,7 +351,7 @@ export const SCENES: SceneConfig[] = [
     title: "Việc làm & Thực tập",
     videoSrc: "recordings/scene-3.mp4",
     voiceSrc: "audio/voice-3.mp3",
-    durationInFrames: 1200,
+    durationInFrames: 1050,
     playbackRate: "auto",
     intro: "depth",
     outro: "depth",
@@ -387,7 +368,7 @@ export const SCENES: SceneConfig[] = [
       { fromFrame: 520, toFrame: 800, x: 0.5, y: 0.45, scale: 1.22 },
       { fromFrame: 880, toFrame: 1160, x: 0.5, y: 0.5, scale: 1.22 },
     ],
-    callouts: scene3Callouts,
+    callouts: scaleCallouts(scene3Callouts, 1050 / 1200),
     intertitle: {
       eyebrow: "Cảnh 3 / 8",
       words: [
@@ -399,10 +380,10 @@ export const SCENES: SceneConfig[] = [
   },
   {
     id: 4,
-    title: "Sự kiện & Khảo sát",
+    title: "Sự kiện & Diễn giả cựu SV",
     videoSrc: "recordings/scene-4.mp4",
     voiceSrc: "audio/voice-4.mp3",
-    durationInFrames: 1050,
+    durationInFrames: 1500,
     playbackRate: "auto",
     intro: "depth",
     outro: "depth",
@@ -428,7 +409,7 @@ export const SCENES: SceneConfig[] = [
       words: [
         { text: "Sự kiện", tone: "ink" },
         { text: "&", tone: "soft" },
-        { text: "Khảo sát", tone: "accent" },
+        { text: "Diễn giả cựu SV", tone: "accent" },
       ],
     },
   },
@@ -472,7 +453,7 @@ export const SCENES: SceneConfig[] = [
     title: "Thư viện ảnh",
     videoSrc: "recordings/scene-6.mp4",
     voiceSrc: "audio/voice-6.mp3",
-    durationInFrames: 900,
+    durationInFrames: 750,
     playbackRate: "auto",
     intro: "depth",
     outro: "depth",
@@ -489,7 +470,7 @@ export const SCENES: SceneConfig[] = [
       { fromFrame: 340, toFrame: 560, x: 0.5, y: 0.5, scale: 1.22 },
       { fromFrame: 600, toFrame: 880, x: 0.5, y: 0.5, scale: 1.22 },
     ],
-    callouts: scene6Callouts,
+    callouts: scaleCallouts(scene6Callouts, 750 / 900),
     intertitle: {
       eyebrow: "Cảnh 6 / 8",
       words: [
@@ -573,6 +554,28 @@ export const SCENES: SceneConfig[] = [
     },
   },
 ];
+
+const shortUrl = (u: string) =>
+  u.replace(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g, (m) => m.slice(0, 8));
+
+/** Ghép đường dẫn và vai trò thật (ghi lúc quay) lên cấu hình cảnh. */
+const withMeta = (scene: SceneConfig): SceneConfig => {
+  const meta = RECORDING_META[scene.id];
+  if (!meta) return scene;
+  const k = scene.durationInFrames / meta.duration;
+  const routes = meta.navs.map(([t, u]) => ({ frame: Math.round(t * k), url: shortUrl(u) }));
+  const routeChanges = routes.filter((r, i) => i === 0 || r.url !== routes[i - 1].url);
+  if (routeChanges.length) routeChanges[0] = { ...routeChanges[0], frame: 0 };
+  const roles = meta.roles.map(([t, r]) => ({ frame: Math.round(t * k), role: r as RoleId }));
+  return {
+    ...scene,
+    startRole: roles[0]?.role ?? scene.startRole,
+    roleChanges: roles.slice(1),
+    routeChanges: routeChanges.length ? routeChanges : scene.routeChanges,
+  };
+};
+
+export const SCENES: SceneConfig[] = RAW_SCENES.map(withMeta);
 
 export const TOTAL_FRAMES = SCENES.reduce(
   (sum, scene) => sum + scene.durationInFrames,

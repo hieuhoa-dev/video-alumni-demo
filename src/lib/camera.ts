@@ -1,6 +1,7 @@
 import { Easing, interpolate, spring } from "remotion";
 import { BROWSER_CONTENT_HEIGHT, BROWSER_WIDTH, FPS } from "../theme";
 import type { RoleId, SceneConfig, ZoomTarget } from "../types/timeline";
+import { getClickWeight, getFocus, type CursorTrack } from "./cursor";
 
 export type Pose = {
   rotateX: number;
@@ -56,7 +57,13 @@ export const getZoomWeight = (target: ZoomTarget, frame: number): number => {
  * Tư thế camera: tư thế nền + nghiêng rotateY + nổi lơ lửng ±8px
  * + lao sâu vào điểm nhấn (scale, translateZ 80px, dịch tâm).
  */
-export const getCameraPose = (scene: SceneConfig, frame: number): Pose => {
+export const AUTO_ZOOM = 1.34;
+
+export const getCameraPose = (
+  scene: SceneConfig,
+  frame: number,
+  track?: CursorTrack | null,
+): Pose => {
   const keys = scene.cameraKeyframes;
   const frames = keys.map((k) => k.frame);
   const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
@@ -78,7 +85,18 @@ export const getCameraPose = (scene: SceneConfig, frame: number): Pose => {
   let depth = 0;
   let dx = 0;
   let dy = 0;
-  for (const target of scene.zoomTargets) {
+  if (track) {
+    const w = getClickWeight(track, frame);
+    if (w > 0) {
+      const f = getFocus(track, frame);
+      const sc = 1 + w * (AUTO_ZOOM - 1);
+      zoomExtra = w * (AUTO_ZOOM - 1);
+      depth = w * ZOOM_DEPTH;
+      dx = (0.5 - f.x) * BROWSER_WIDTH * sc * w;
+      dy = (0.5 - f.y) * BROWSER_CONTENT_HEIGHT * sc * w;
+    }
+  }
+  for (const target of track ? [] : scene.zoomTargets) {
     const w = getZoomWeight(target, frame);
     if (w === 0) continue;
     zoomExtra += w * (target.scale - 1);

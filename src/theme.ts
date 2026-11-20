@@ -4,13 +4,13 @@ import type { Tone } from "./types/timeline";
 
 /**
  * Font nhúng sẵn trong `public/fonts` (không cần mạng khi render).
- * - Smiley Sans: tiêu đề lớn (hỗ trợ đầy đủ dấu tiếng Việt, giấy phép OFL).
+ * - Be Vietnam Pro: tiêu đề lớn (thiết kế cho tiếng Việt, giấy phép OFL).
  * - Inter: chữ giao diện nhỏ.
  */
 export const FONT_UI = '"Inter LM", Inter, system-ui, sans-serif';
 /** Tên ngắn cho chữ giao diện, dùng chung ở các component. */
 export const FONT_FAMILY = FONT_UI;
-export const FONT_DISPLAY = '"Smiley Sans", "Inter LM", Inter, sans-serif';
+export const FONT_DISPLAY = '"Be Vietnam Pro", "Inter LM", Inter, sans-serif';
 
 loadFont({
   family: "Inter LM",
@@ -18,11 +18,22 @@ loadFont({
   weight: "100 900",
 }).catch((error) => console.warn("Không nạp được font Inter", error));
 
-loadFont({
-  family: "Smiley Sans",
-  url: staticFile("fonts/smiley-sans.woff2"),
-  weight: "400",
-}).catch((error) => console.warn("Không nạp được font Smiley Sans", error));
+const BVP_RANGES: Record<string, string> = {
+  latin:
+    "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+  vietnamese:
+    "U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB",
+};
+for (const weight of ["500", "600", "700", "800"]) {
+  for (const subset of ["latin", "vietnamese"]) {
+    loadFont({
+      family: "Be Vietnam Pro",
+      url: staticFile(`fonts/be-vietnam-pro-${subset}-${weight}-normal.woff2`),
+      weight,
+      unicodeRange: BVP_RANGES[subset],
+    }).catch((error) => console.warn("Không nạp được font Be Vietnam Pro", error));
+  }
+}
 
 export const FPS = 30;
 export const STAGE_WIDTH = 1920;
@@ -47,17 +58,17 @@ export const COLORS = {
   ink: "#0B1220",
   muted: "#667085",
   faint: "#98A2B3",
-  blue: "#2F6BFF",
-  blue500: "#2F6BFF",
-  blue200: "#8FB2FF",
-  blue2: "#4D8DFF",
-  blueDeep: "#1D4ED8",
-  blueSoft: "#EAF1FF",
-  blueRing: "#8FB2FF",
-  emerald: "#10B981",
-  emeraldDeep: "#047857",
-  emeraldSoft: "#DCFCE7",
-  emeraldRing: "#6EE7B7",
+  blue: "#0F6E78",
+  blue500: "#0F6E78",
+  blue200: "#4BB3A1",
+  blue2: "#1E8F96",
+  blueDeep: "#0A525A",
+  blueSoft: "#E3F3F0",
+  blueRing: "#4BB3A1",
+  emerald: "#4BB3A1",
+  emeraldDeep: "#2E8F80",
+  emeraldSoft: "#E3F3F0",
+  emeraldRing: "#8ED5C8",
 } as const;
 
 export const SHADOWS = {

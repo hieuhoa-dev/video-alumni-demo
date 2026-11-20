@@ -117,7 +117,7 @@ export const Intertitle: React.FC<{ scene: SceneConfig }> = ({ scene }) => {
             height: 16,
             borderRadius: "50%",
             background: COLORS.blue,
-            boxShadow: "0 0 0 6px rgba(47,107,255,0.16)",
+            boxShadow: "0 0 0 6px rgba(15,110,120,0.16)",
           }}
         />
         {intertitle.eyebrow}

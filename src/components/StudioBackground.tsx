@@ -18,7 +18,7 @@ export const StudioBackground: React.FC = () => {
       <AbsoluteFill
         style={{
           background:
-            "radial-gradient(1100px 620px at 50% -10%, rgba(47,107,255,0.12), transparent 70%), radial-gradient(900px 600px at 50% 115%, rgba(47,107,255,0.07), transparent 70%)",
+            "radial-gradient(1100px 620px at 50% -10%, rgba(15,110,120,0.12), transparent 70%), radial-gradient(900px 600px at 50% 115%, rgba(15,110,120,0.07), transparent 70%)",
         }}
       />
       <AbsoluteFill
